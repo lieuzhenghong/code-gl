@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <TextField.h>
 #include <SDLWindowManager.h>
+#include <SDL_ttf.h>
 #include <iostream>
 
 using namespace std;
@@ -23,6 +24,14 @@ TextField::TextField(const int width, const int height, const SDL_Point pos):
 };
 
 void TextField::render(SDL_Renderer* screenRenderer){
+    /*
+    if (TTF_Init() == -1)
+    {
+        cout << "Init TTF failed" << SDL_GetError() << endl;
+        // Should I throw an error code here? But the function is void
+    }
+    */
+
     SDL_Rect rect {
                     TextField::position.x,
                     TextField::position.y,
