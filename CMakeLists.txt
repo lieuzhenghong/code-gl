@@ -14,6 +14,7 @@ include (FindPkgConfig)
 
 PKG_SEARCH_MODULE (SDL2 REQUIRED sdl2)
 PKG_SEARCH_MODULE (SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+PKG_SEARCH_MODULE (SDL2TTF required SDL2_ttf>=2.0.0)
 
 include_directories (${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 include_directories (sdl)
