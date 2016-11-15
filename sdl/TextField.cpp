@@ -132,6 +132,25 @@ void TextField::handleEvent( SDL_Event* e)
         }
     }
 
-    else if (e->)
+    else if (e->type == SDL_KEYDOWN)
+    {
+        switch (e->key.keysym.sym)
+        {
+            case SDLK_BACKSPACE: 
+            cout << "backspace, \\b pressed" << endl;
+            TextField::text.pop_back();
+            break;
 
+            case SDLK_RETURN:
+            cout << "return, \\r pressed" << endl;
+            TextField::text += "\n";
+            break;
+
+            case SDLK_TAB:
+            cout << "tab, \\t pressed" << endl;
+            TextField::text += "\t";
+            break;
+        }
+        //cout << TextField::text << endl;
+    }
 }

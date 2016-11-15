@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/chrx/dev/mark_project/sdl/sdl/SDLWindowManager.cpp
+/home/lieu/dev/code-gl/sdl/SDLWindowManager.cpp
 SDL.h
 -
 cstdio
@@ -14,7 +14,7 @@ cstdio
 SDLWindowManager.h
 -
 
-/home/chrx/dev/mark_project/sdl/sdl/TextField.cpp
+/home/lieu/dev/code-gl/sdl/TextField.cpp
 SDL.h
 -
 TextField.h
@@ -24,7 +24,7 @@ SDLWindowManager.h
 iostream
 -
 
-/home/chrx/dev/mark_project/sdl/sdlMain.cpp
+/home/lieu/dev/code-gl/sdlMain.cpp
 SDL.h
 -
 cstdio

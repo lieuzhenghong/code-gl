@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/chrx/dev/mark_project/sdl
+CMAKE_SOURCE_DIR = /home/lieu/dev/code-gl
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/chrx/dev/mark_project/sdl
+CMAKE_BINARY_DIR = /home/lieu/dev/code-gl
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/chrx/dev/mark_project/sdl/CMakeFiles /home/chrx/dev/mark_project/sdl/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lieu/dev/code-gl/CMakeFiles /home/lieu/dev/code-gl/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/chrx/dev/mark_project/sdl/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lieu/dev/code-gl/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -g   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/usr/include/SDL2 -I/home/chrx/dev/mark_project/sdl/sdl 
+CXX_INCLUDES = -I/usr/include/SDL2 -I/home/lieu/dev/code-gl/sdl 
 

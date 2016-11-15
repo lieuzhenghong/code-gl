@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/chrx/dev/mark_project/sdl/sdl/SDLWindowManager.cpp" "/home/chrx/dev/mark_project/sdl/CMakeFiles/CodeGUI.dir/sdl/SDLWindowManager.cpp.o"
-  "/home/chrx/dev/mark_project/sdl/sdl/TextField.cpp" "/home/chrx/dev/mark_project/sdl/CMakeFiles/CodeGUI.dir/sdl/TextField.cpp.o"
-  "/home/chrx/dev/mark_project/sdl/sdlMain.cpp" "/home/chrx/dev/mark_project/sdl/CMakeFiles/CodeGUI.dir/sdlMain.cpp.o"
+  "/home/lieu/dev/code-gl/sdl/SDLWindowManager.cpp" "/home/lieu/dev/code-gl/CMakeFiles/CodeGUI.dir/sdl/SDLWindowManager.cpp.o"
+  "/home/lieu/dev/code-gl/sdl/TextField.cpp" "/home/lieu/dev/code-gl/CMakeFiles/CodeGUI.dir/sdl/TextField.cpp.o"
+  "/home/lieu/dev/code-gl/sdlMain.cpp" "/home/lieu/dev/code-gl/CMakeFiles/CodeGUI.dir/sdlMain.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
