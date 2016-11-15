@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -g   CMakeFiles/CodeGUI.dir/sdlMain.cpp.o CMakeFiles/CodeGUI.dir/sdl/SDLWindowManager.cpp.o CMakeFiles/CodeGUI.dir/sdl/TextField.cpp.o  -o CodeGUI -lSDL2 -lSDL2_image -lSDL2 -lSDL2_image 
