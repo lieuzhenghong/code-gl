@@ -3,6 +3,7 @@
 #include <SDLWindowManager.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -19,24 +20,21 @@ TextField::TextField(const int width, const int height, const SDL_Point pos):
     width(width),
     height(height),
     position(pos),
-    focus(false)
-{   
+    focus(false),
+    text(""),
+    text_lines(1)
+{
 };
 
-void TextField::render(SDL_Renderer* screenRenderer){
-
-    if (TTF_Init() == -1)
+void TextField::render(SDL_Renderer* screenRenderer, TTF_Font* font)
+{
+    SDL_Rect rect 
     {
-        cout << "Init TTF failed" << SDL_GetError() << endl;
-        // Should I throw an error code here? But the function is void
-    }
-
-    SDL_Rect rect {
-                    TextField::position.x,
-                    TextField::position.y,
-                    TextField::width, 
-                    TextField::height
-                    };
+        TextField::position.x,
+        TextField::position.y,
+        TextField::width, 
+        TextField::height
+    };
     switch (TextField::status)
     {
         case MOUSE_OUT:
@@ -48,15 +46,61 @@ void TextField::render(SDL_Renderer* screenRenderer){
         break;            
     }
 
-    // If the textfield is in focus
+    // If the textfield is in focus, change the colour
     if (TextField::focus == true)
     {
         SDL_SetRenderDrawColor(screenRenderer, 120, 120, 120, 255);
     }
-    //SDL_SetRenderDrawColor(screenRenderer, 40, 40, 40, 255);
+
     SDL_RenderFillRect(screenRenderer, &rect);
     SDL_SetRenderDrawColor(screenRenderer, 0, 255, 0, 255);
     SDL_RenderDrawRect(screenRenderer, &rect);
+
+    // Render the text
+    SDL_Color textColor = {255, 255, 255, 0};
+
+    // Generate the text lines first
+    TextField::renderTextLines();
+
+    // For every text line, render it
+    
+    uint line_count = 0;
+    for (vector<string>::size_type i = 0; i < (TextField::text_lines.size()); i++)
+    {
+
+        // First, check if the line I am rendering is nothing.
+        // If not, skip the rendering
+
+        if (!TextField::text_lines[i].empty())
+        {
+            SDL_Surface* textSurface = TTF_RenderText_Solid
+            (
+                font, 
+                TextField::text_lines[i].c_str(), 
+                textColor
+            );
+            SDL_Texture* text = SDL_CreateTextureFromSurface
+            (
+                screenRenderer, 
+                textSurface
+            );
+            int text_width = textSurface->w;
+            int text_height = textSurface->h;
+            SDL_FreeSurface(textSurface);
+
+            SDL_Rect textQuad
+            {
+                TextField::position.x + 5,
+                TextField::position.y + line_count * 16,
+                text_width,
+                text_height
+            };
+            SDL_RenderCopy(screenRenderer, text, NULL, &textQuad);
+            SDL_DestroyTexture(text);
+            line_count++;
+        }
+    }
+
 };
 
 void TextField::handleEvent( SDL_Event* e)
@@ -110,7 +154,7 @@ void TextField::handleEvent( SDL_Event* e)
                 TextField::status = MOUSE_DOWN;
                 cout << "mouse down" << endl;
                 TextField::focus = true;
-                SDL_StartTextInput();
+                //SDL_StartTextInput();
                 break;
 
                 case SDL_MOUSEBUTTONUP:
@@ -128,7 +172,7 @@ void TextField::handleEvent( SDL_Event* e)
         {
             case SDL_TEXTINPUT:
             TextField::text += e->text.text;
-            cout << TextField::text << endl;
+            //cout << TextField::text << endl;
             break;
 
             case SDL_TEXTEDITING:
@@ -161,4 +205,64 @@ void TextField::handleEvent( SDL_Event* e)
         }
         //cout << TextField::text << endl;
     }
-}
+};
+
+void TextField::renderTextLines()
+{
+    //cout << "Function called!" << endl;
+    // Clear all text lines
+    TextField::text_lines.clear();
+
+    TextField::text_lines.push_back(string());
+    uint line_count = 0;
+    
+    // Prepend the line count
+    if (line_count < 9)
+    {
+        TextField::text_lines[line_count] += " " + to_string(line_count+1) + " ";
+    }
+    else
+    {
+        TextField::text_lines[line_count] += to_string(line_count+1) + " ";
+    }
+
+    // Until we hit the end of the C++ string, read char by char
+    for (uint i = 0; TextField::text[i] != '\0'; i++)
+    {
+        char c = TextField::text[i];
+
+        // Once we hit a newline,
+        if (c == '\n')
+        {
+            // Go to the next line
+            line_count++;
+            
+            // Add a new string to vector
+            TextField::text_lines.push_back(string());
+
+            // Add line number
+            if (line_count < 9)
+            {
+                TextField::text_lines[line_count] += " " + to_string(line_count+1) + " ";
+            }
+            else
+            {
+                TextField::text_lines[line_count] += to_string(line_count+1) + " ";
+            }
+        }
+
+        else if (c == '\t')
+        // If it's a tab character, put two spaces instead
+        {
+            TextField::text_lines[line_count] += "  ";
+        }
+        
+        // Append the character to the correct text_line
+        // only if it is NOT a newline or tab character
+        else
+        {
+            TextField::text_lines[line_count] += c;
+        }
+    }
+};
+

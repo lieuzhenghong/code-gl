@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <SDL.h>
-
+#include <SDL_ttf.h>
+#include <vector>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ class TextField
         int setStatus();
 
         // Render the text field
-        void render(SDL_Renderer* renderer);
+        void render(SDL_Renderer* renderer, TTF_Font* font);
 
     private:
         const int width;
@@ -32,4 +33,6 @@ class TextField
         string composition;
         Sint32 cursor;
         Sint32 selection_len;
+        vector<string> text_lines;
+        void renderTextLines();
 };

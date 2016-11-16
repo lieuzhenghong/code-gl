@@ -4,6 +4,7 @@
 #include<TextField.h>
 #include<Processor.h>
 #include<Instruction.h>
+#include <iostream>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ const int height = SDLWindowManager::SCREEN_HEIGHT;
 const int width = SDLWindowManager::SCREEN_WIDTH;
 const int rect_height = width/2;
 const int rect_width = height/2;
-
+TTF_Font* font = NULL;
 const SDL_Point position{20, (height-rect_height)/2};
 
 int main(int argc, char* args[]){
@@ -37,6 +38,7 @@ int main(int argc, char* args[]){
 	return 0;
 	*/
 
+
 	printf("%i: %i\n", rect_height, rect_width);
 	SDL_Renderer *screenRenderer = SDLWindowManager::Init();
 	if(!screenRenderer)
@@ -45,6 +47,24 @@ int main(int argc, char* args[]){
 	int frame = 0;
 	SDL_Event e;
 	TextField code_box = TextField(rect_width, rect_height, position);
+
+    if (TTF_Init() == -1)
+    {
+        cout << "Init TTF failed" << SDL_GetError() << endl;
+        return 1;
+    }
+    font = TTF_OpenFont("bin/SourceCodePro-Medium.ttf", 14);
+    if (font == nullptr)
+    {
+        cout << "Failed to load font: " << SDL_GetError() << endl;
+		return 1;
+    }
+	else
+	{
+		cout << "Font: " << font << endl;
+	}
+
+
 	while(running){
 		while(SDL_PollEvent(&e)!=0){
 			if(e.type == SDL_QUIT){
@@ -55,8 +75,7 @@ int main(int argc, char* args[]){
 		SDL_SetRenderDrawColor(screenRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(screenRenderer);
 
-		code_box.render(screenRenderer);
-
+		code_box.render(screenRenderer, font);
 		SDL_RenderPresent(screenRenderer);
 
 		//frame++;
