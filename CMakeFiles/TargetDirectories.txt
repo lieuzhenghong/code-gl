@@ -1,3 +1,0 @@
-/home/lieu/dev/code-gl/CMakeFiles/edit_cache.dir
-/home/lieu/dev/code-gl/CMakeFiles/rebuild_cache.dir
-/home/lieu/dev/code-gl/CMakeFiles/CodeGUI.dir
