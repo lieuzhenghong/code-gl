@@ -3,8 +3,10 @@
 #include <fstream>
 #include <Instruction.h>
 #include <vector>
+#include <string>
 
 using namespace std;
+
 
 int Parser::parse(string text)
 {
@@ -22,7 +24,7 @@ int Parser::parse(string text)
 		if (reading_instruction)
 		{
 			// Since everything is space-delineated, I can toggle the flag once I hit a space
-			if (text[i] = " ")
+			if (text[i] == ' ')
 			{
 				reading_instruction = false;	
 			}
@@ -45,32 +47,28 @@ int Parser::parse(string text)
 			if (text[i] == '\n')
 			{
 				// Now handle the instruction
-				switch (ins)
+				if (ins == "add")
 				{
-					case (ins == "add")
-					{
-						// TODO
-						// Syntax: add r0 r1 r2
-						// Add r0 and r1 and save the result to r2
- 						out += Instruction::EncodeAdd(r[02], r[1], r[0]);
-						break;
-					}
-					case (ins == "mov")
-					{
-						// TODO
-						// Syntax: mov r0 r1
-						// Move the value of r[0] to r[1]
-						out += Instruction::EncodeMov(r[1], r[0]);
-						break;
-					}
-					case (ins == "set")
-					{
-						// TODO
-						// Syntax: set r0 int
-						// Set r0 to be an int
-						out += Instruction::EncodeMovI(r[0], r[1]);
-						break;
-					}
+					// TODO
+					// Syntax: add r0 r1 r2
+					// Add r0 and r1 and save the result to r2
+					out += Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0]));
+					
+				}
+				else if (ins == "mov")
+				{
+					// TODO
+					// Syntax: mov r0 r1
+					// Move the value of r[0] to r[1]
+					out += Instruction::EncodeMov(stoi(r[1]), stoi(r[0]));
+
+				}
+				else if (ins == "set")
+				{
+					// TODO
+					// Syntax: set r0 int
+					// Set r0 to be an int
+					out += Instruction::EncodeMovI(stoi(r[0]), stoi(r[1]));
 				}
 				reading_instruction = true;
 				out += '\n';
