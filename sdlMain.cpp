@@ -48,6 +48,7 @@ int main(int argc, char* args[]){
 	SDL_Event e;
 	TextField code_box = TextField(rect_width, rect_height, position);
 
+
     if (TTF_Init() == -1)
     {
         cout << "Init TTF failed" << SDL_GetError() << endl;

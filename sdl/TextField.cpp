@@ -3,6 +3,7 @@
 #include <SDLWindowManager.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include <parser.h>
 #include <vector>
 
 using namespace std;
@@ -190,7 +191,12 @@ void TextField::handleEvent( SDL_Event* e)
         {
             case SDLK_BACKSPACE: 
             cout << "backspace, \\b pressed" << endl;
-            TextField::text.pop_back();
+
+            if (!TextField::text.empty())
+            {
+                TextField::text.pop_back();
+            }
+
             break;
 
             case SDLK_RETURN:
@@ -201,6 +207,11 @@ void TextField::handleEvent( SDL_Event* e)
             case SDLK_TAB:
             cout << "tab, \\t pressed" << endl;
             TextField::text += "\t";
+            break;
+
+            case SDLK_RIGHT:
+            Parser p = Parser();
+            p.parse(TextField::text);
             break;
         }
         //cout << TextField::text << endl;

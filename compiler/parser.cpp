@@ -15,20 +15,28 @@ int Parser::parse(string text)
 	uint param_count = 0;
 	string ins = "";
 	string para = "";
-	string out = "";
+	vector<uint32_t> out;
 
 	r.clear();
 
 	for (uint i = 0; text[i] != '\0'; i++)
 	{
+		//cout << "Character being read: " << text[i] << endl;
 		if (reading_instruction)
 		{
 			// Since everything is space-delineated, I can toggle the flag once I hit a space
 			if (text[i] == ' ')
 			{
-				reading_instruction = false;	
+				cout << "No longer reading instruction." << endl;
+				reading_instruction = false;
+				cout << "Instruction: " << ins << "." << endl;
+				// Also, get ready to read a new parameter.
+				r.push_back(string());
 			}
-			ins += text[i];
+			else
+			{
+				ins += text[i];
+			}
 		}
 		else
 		// We have a couple of cases when we are not reading an instruction
@@ -44,6 +52,7 @@ int Parser::parse(string text)
 		{
 			// Start of a new line: we now start reading instruction again
 			// This is assuming that one instruction fits on one line!!
+
 			if (text[i] == '\n')
 			{
 				// Now handle the instruction
@@ -52,48 +61,113 @@ int Parser::parse(string text)
 					// TODO
 					// Syntax: add r0 r1 r2
 					// Add r0 and r1 and save the result to r2
-					out += Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0]));
-					
+					out.push_back(Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0])));
+					cout << out.back() << endl;
 				}
 				else if (ins == "mov")
 				{
 					// TODO
 					// Syntax: mov r0 r1
 					// Move the value of r[0] to r[1]
-					out += Instruction::EncodeMov(stoi(r[1]), stoi(r[0]));
-
+					out.push_back(Instruction::EncodeMov(stoi(r[1]), stoi(r[0])) );
+					cout << out.back() << endl;
 				}
 				else if (ins == "set")
 				{
 					// TODO
 					// Syntax: set r0 int
 					// Set r0 to be an int
-					out += Instruction::EncodeMovI(stoi(r[0]), stoi(r[1]));
+					out.push_back(Instruction::EncodeMovI(stoi(r[0]), stoi(r[1])) );
+					cout << out.back() << endl;
 				}
+				ins = "";
+				param_count=0;
+				r.clear();
 				reading_instruction = true;
-				out += '\n';
 			}
 			else if (text[i] == ' ' || text[i] == '\t')
 			// Get ready to read a new parameter
 			{
 				r.push_back(string());
 				param_count++;
+				cout << "Reading new instruction..." << endl;
 			}
 			else
 			{
 				// We are now reading part of a parameter
+				cout << "Adding to parameter: " << text[i] << endl;
 				r[param_count] += text[i];
+				cout << "Parameter " << param_count << " : " << r[param_count] << endl;
 			}
 		}
 	}
+	// We have reached the end of the file. Dump the final instructions
+	cout << "End of string. Parsing last instruction..." << endl;
+	cout << "Instruction is: " << ins << endl;
+	// Now handle the instruction
+	if (ins == "add")
+	{
+		// TODO
+		// Syntax: add r0 r1 r2
+		// Add r0 and r1 and save the result to r2
+		out.push_back(Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0])));
+		cout << out.back() << endl;
+	}
+	else if (ins == "mov")
+	{
+		// TODO
+		// Syntax: mov r0 r1
+		// Move the value of r[0] to r[1]
+		out.push_back(Instruction::EncodeMov(stoi(r[1]), stoi(r[0])) );
+		cout << out.back() << endl;
+	}
+	else if (ins == "set")
+	{
+		// TODO
+		// Syntax: set r0 int
+		// Set r0 to be an int
+		out.push_back(Instruction::EncodeMovI(stoi(r[0]), stoi(r[1])) );
+		cout << out.back() << endl;
+	}
+
 	// output into a file to debug
 	ofstream f;
-	f.open("test.txt");
-	f << out;
+	f.open("test");
+	for (uint32_t i : out)
+	{
+		cout << d2b(i, 5) << endl;
+		f << d2b(i,5) << " : " << i;
+		f << '\n';
+	}
 	f.close();
 	return 0;
-}
+};
 
+string Parser::d2b(uint32_t d, uint space)
+{
+	// Converts a decimal string 
+	string temp = "";
+	string output = "";
+	uint counter = 0;
+    while (d) {
+		//cout << d << endl;
+		temp.insert(0, 1, (d%2 + '0'));
+		//cout << temp << endl;
+		d /= 2;
+    }
+	for (uint i = 0; temp[i] != '\0'; i++)
+	{
+		if (counter >= space)
+		{
+			output += " ";
+			counter = 0;
+		}
+		output += temp[i];
+		//cout << output << endl;
+		counter++;
+	}
+	return output;
+};
 
 /*
 List of commands
