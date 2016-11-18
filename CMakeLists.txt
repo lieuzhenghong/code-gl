@@ -14,6 +14,7 @@ add_executable (CodeGUI sdlMain.cpp
 	vm/MemoryUnit.cpp
 	arch/Instruction.cpp
     compiler/parser.cpp
+	components/screen.cpp
 )
 
 include (FindPkgConfig)
@@ -30,4 +31,5 @@ include_directories (
 	vm
 	arch
 	compiler
+	components
 )

@@ -1,10 +1,12 @@
 #include<SDL.h>
 #include<cstdio>
 #include<SDLWindowManager.h>
+#include <iostream>
+
 #include<TextField.h>
 #include<Processor.h>
 #include<Instruction.h>
-#include <iostream>
+#include <screen.h>
 
 using namespace std;
 
@@ -13,7 +15,9 @@ const int width = SDLWindowManager::SCREEN_WIDTH;
 const int rect_height = width/2;
 const int rect_width = height/2;
 TTF_Font* font = NULL;
-const SDL_Point position{20, (height-rect_height)/2};
+const uint8_t pixel_led_height = 128;
+const SDL_Point code_box_position{20, (height-rect_height)/2};
+const SDL_Point pixel_led_position{200, (height-pixel_led_height)/2};
 
 int main(int argc, char* args[]){
 	/*
@@ -38,7 +42,6 @@ int main(int argc, char* args[]){
 	return 0;
 	*/
 
-
 	printf("%i: %i\n", rect_height, rect_width);
 	SDL_Renderer *screenRenderer = SDLWindowManager::Init();
 	if(!screenRenderer)
@@ -46,8 +49,8 @@ int main(int argc, char* args[]){
 	bool running = true;
 	int frame = 0;
 	SDL_Event e;
-	TextField code_box = TextField(rect_width, rect_height, position);
-
+	TextField code_box = TextField(rect_width, rect_height, code_box_position);
+	Screen pixel_led = Screen(pixel_led_height, pixel_led_position);
 
     if (TTF_Init() == -1)
     {
@@ -65,7 +68,6 @@ int main(int argc, char* args[]){
 		cout << "Font: " << font << endl;
 	}
 
-
 	while(running){
 		while(SDL_PollEvent(&e)!=0){
 			if(e.type == SDL_QUIT){
@@ -77,6 +79,7 @@ int main(int argc, char* args[]){
 		SDL_RenderClear(screenRenderer);
 
 		code_box.render(screenRenderer, font);
+		pixel_led.render(screenRenderer, 2);
 		SDL_RenderPresent(screenRenderer);
 
 		//frame++;
