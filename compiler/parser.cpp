@@ -4,6 +4,7 @@
 #include <Instruction.h>
 #include <vector>
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 
@@ -149,21 +150,36 @@ string Parser::d2b(uint32_t d, uint space)
 	string temp = "";
 	string output = "";
 	uint counter = 0;
+	uint blocks = 0;
     while (d) {
 		//cout << d << endl;
 		temp.insert(0, 1, (d%2 + '0'));
 		//cout << temp << endl;
 		d /= 2;
     }
-	for (uint i = 0; temp[i] != '\0'; i++)
+	for (uint i = 0; i < 32; i++)
+	{
+			if (temp.length() > i)
+			{
+				output += temp[i];				
+			}
+			// Left-pad with 0s
+			else
+			{
+				output.insert(0, 1, '0');
+			}
+	}
+	for (uint j = 0; j < 32; j++)
 	{
 		if (counter >= space)
 		{
-			output += " ";
+			// We must insert +blocks because every time
+			// we insert a space, the whole string moves one right
+			// Otherwise, we wil lkeep inserting lefter and lefter
+			output.insert(j+blocks, 1, ' ');
 			counter = 0;
+			blocks++;
 		}
-		output += temp[i];
-		//cout << output << endl;
 		counter++;
 	}
 	return output;
