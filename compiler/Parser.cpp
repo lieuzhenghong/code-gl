@@ -48,7 +48,6 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		}
 		else
 		{
-			out->push_back( Instruction::EncodePScreen(stoi((*r)[0])) );
 			//cout << out->back() << endl;
 		}
 	}

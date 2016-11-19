@@ -22,6 +22,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
     };
 
     SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     // Process for rendering:
 
     SDL_Texture * pixel_grid = SDL_CreateTexture(  
@@ -76,7 +77,6 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         
     }
 
-
     SDL_UpdateTexture(
         pixel_grid,
         NULL,
@@ -84,21 +84,23 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         HEIGHT
     );
     SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
+    //Draw border
+    SDL_RenderDrawRect(renderer, &rect);
     SDL_DestroyTexture(pixel_grid);
 }
 
 void Screen::ReadWord(unsigned int word)
 {
-    cout << "ReadWord called! " << endl;
     // I evidently didn't think this through
     // Because there's no way to show a specific register
-
+    
     const unsigned int NUM_REGISTERS = 16;
     const unsigned int REGISTER_SIZE = 32;
 
     if (!is_reading)
     {
         register_count = 0;
+        is_reading = true;
     }
     // Each register is 32 bits and there are 16 registers
     // Each pixel is 8 bits and there are 32 pixels per line
@@ -108,22 +110,27 @@ void Screen::ReadWord(unsigned int word)
     // If the nth bit of the register is 1, fill up the nth pixel
     // in the line. Easy!
 
-    for (unsigned int i = 0; i < NUM_REGISTERS; i++)
+    cout << "Register " << register_count << " : " << word << endl;
+    for (unsigned int n = 0; n < REGISTER_SIZE; n++)
     {
-        for (unsigned int n = 0; n < REGISTER_SIZE; n++)
+        // If the nth bit of the register is a 1
+        if (word & (1 << n))
         {
-            // If the nth bit of the register is a 1
-            if (word & 1 << n)
-            {
-                grid[i * n] = 255;
-            }
-            else
-            {
-                grid[i * n] = 0;
-            }
+            grid[(register_count * 32) + n] = 255;
         }
+        else
+        {
+            //cout << n << "th bit is 0" << endl;
+            grid[(register_count * 32) + n] = 0;
+        }
+        cout << "Grid square " << (register_count * 32) + n << " : " <<  +grid[(register_count *32) + n] << endl;
     }
+    register_count++;
     
     //Finished reading--reset the flag
-    is_reading = false;
+    if (register_count > NUM_REGISTERS - 1)
+    {
+        cout << "triggering" << endl;
+        is_reading = false;
+    }
 }

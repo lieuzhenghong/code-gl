@@ -7,6 +7,7 @@
 #include<Processor.h>
 #include<Instruction.h>
 #include <Screen.h>
+#include <Parser.h>
 
 using namespace std;
 
@@ -16,11 +17,74 @@ const int rect_height = width/2;
 const int rect_width = height/2;
 TTF_Font* font = NULL;
 const SDL_Point code_box_position{20, (height-rect_height)/2};
-const uint8_t PIXEL_LED_SCALE = 8;
-const SDL_Point pixel_led_position{
+const uint8_t PIXEL_LED_SCALE = 10;
+const SDL_Point pixel_led_position {
 	300, 
 	(height- (Screen::HEIGHT * PIXEL_LED_SCALE))/2
 	};
+TextField code_box = TextField(rect_width, rect_height, code_box_position);
+Screen pixel_led = Screen(pixel_led_position);
+
+void handleEvent(SDL_Event* e, TextField* code_box)
+{
+    // If a keyboard event happened and text input is started
+    if (e->type == SDL_TEXTINPUT )
+    {
+        switch(e->type)
+        {
+            case SDL_TEXTINPUT:
+            code_box->text += e->text.text;
+            break;
+        }
+    }
+
+    else if (e->type == SDL_KEYDOWN)
+    {
+        switch (e->key.keysym.sym)
+        {
+            case SDLK_BACKSPACE: 
+            //cout << "backspace, \\b pressed" << endl;
+
+            if (!code_box->text.empty())
+            {
+                code_box->text.pop_back();
+            }
+            break;
+
+            case SDLK_RETURN:
+           // cout << "return, \\r pressed" << endl;
+            code_box->text += "\n";
+            break;
+
+            case SDLK_TAB:
+            //cout << "tab, \\t pressed" << endl;
+            code_box->text += "\t";
+            break;
+
+            case SDLK_RIGHT:
+            Parser parser = Parser();
+            Processor pro = Processor();
+			pro.ConnectScreen(&pixel_led);
+
+			unsigned int i = 0;
+			for (uint32_t word : parser.Parse(code_box->text))
+			{
+				cout << "Command: " << word << endl;
+				pro.FlashMem(i, word);
+				i++;
+			}
+			pro.FlashMem(i, Instruction::EncodeHalt());
+
+			unsigned int cnt = 0;
+			while (pro.GetError() == Processor::ErrorCode::NO_ERROR)
+			{
+				cnt++;
+				pro.RunCycle();
+			}
+            break;
+        }
+    }
+}
 
 int main(int argc, char* args[]){
 	/*
@@ -50,10 +114,7 @@ int main(int argc, char* args[]){
 	if(!screenRenderer)
 		return 1;
 	bool running = true;
-	int frame = 0;
 	SDL_Event e;
-	TextField code_box = TextField(rect_width, rect_height, code_box_position);
-	Screen pixel_led = Screen(pixel_led_position);
 
     if (TTF_Init() == -1)
     {
@@ -76,7 +137,7 @@ int main(int argc, char* args[]){
 			if(e.type == SDL_QUIT){
 				running = false;
 			}
-			code_box.handleEvent(&e);
+			handleEvent(&e, &code_box);
 		}
 		SDL_SetRenderDrawColor(screenRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(screenRenderer);
@@ -89,5 +150,4 @@ int main(int argc, char* args[]){
 	}
 	SDLWindowManager::Destroy();
 	return 0;
-}
-
+};
