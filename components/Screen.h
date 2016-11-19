@@ -23,5 +23,7 @@ class Screen
 
     private:
         const SDL_Point position;
-        pixel grid [Screen::HEIGHT * Screen::HEIGHT];
+        bool is_reading;
+        unsigned int register_count;
+        pixel grid [HEIGHT * HEIGHT] = {0};
 };

@@ -20,7 +20,6 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 			stoi((*r)[1]), 
 			stoi((*r)[0])
 			));
-		cout << out->back() << endl;
 	}
 	else if (*ins == "mov")
 	{
@@ -28,7 +27,6 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		// Syntax: mov r0 r1
 		// Move the value of r[0] to r[1]
 		out->push_back(Instruction::EncodeMov(stoi((*r)[1]), stoi((*r)[0])) );
-		cout << out->back() << endl;
 	}
 	else if (*ins == "set")
 	{
@@ -36,7 +34,6 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		// Syntax: set r0 int
 		// Set r0 to be an int
 		out->push_back(Instruction::EncodeMovI(stoi((*r)[0]), stoi((*r)[1])) );
-		cout << out->back() << endl;
 	}
 	else if (*ins == "out")
 	{
@@ -47,18 +44,17 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 			for (int i = 0; i < 16; i++)
 			{
                 out->push_back(Instruction::EncodePScreen(i));
-				cout << out->back() << endl;
 			}
 		}
 		else
 		{
 			out->push_back( Instruction::EncodePScreen(stoi((*r)[0])) );
-			cout << out->back() << endl;
+			//cout << out->back() << endl;
 		}
 	}
 };
 
-int Parser::parse(string text)
+vector<uint32_t> Parser::Parse(string text)
 {
 	vector<string> r; // These are parameters of the commands
 	bool reading_instruction = true;
@@ -77,9 +73,8 @@ int Parser::parse(string text)
 			// Since everything is space-delineated, I can toggle the flag once I hit a space
 			if (text[i] == ' ')
 			{
-				cout << "No longer reading instruction." << endl;
+				//cout << "No longer reading instruction." << endl;
 				reading_instruction = false;
-				cout << "Instruction: " << ins << "." << endl;
 				// Also, get ready to read a new parameter.
 				r.push_back(string());
 			}
@@ -116,22 +111,23 @@ int Parser::parse(string text)
 			{
 				r.push_back(string());
 				param_count++;
-				cout << "Reading new instruction..." << endl;
+				//cout << "Reading new instruction..." << endl;
 			}
 			else
 			{
 				// We are now reading part of a parameter
-				cout << "Adding to parameter: " << text[i] << endl;
+				//cout << "Adding to parameter: " << text[i] << endl;
 				r[param_count] += text[i];
-				cout << "Parameter " << param_count << " : " << r[param_count] << endl;
+				//cout << "Parameter " << param_count << " : " << r[param_count] << endl;
 			}
 		}
 	}
 	// We have reached the end of the file. Dump the final instructions
-	cout << "End of string. Parsing last instruction..." << endl;
-	cout << "Instruction is: " << ins << endl;
+	//cout << "End of string. Parsing last instruction..." << endl;
 	// Now handle the instruction
 	handle_instruction(&ins, &r, &out);
+
+	/*
 	ofstream f;
 	f.open("test");
 	for (uint32_t i : out)
@@ -141,7 +137,8 @@ int Parser::parse(string text)
 		f << '\n';
 	}
 	f.close();
-	return 0;
+	*/
+	return out;
 };
 
 string Parser::d2b(uint32_t d, uint space)

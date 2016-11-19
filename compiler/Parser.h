@@ -7,7 +7,7 @@ using namespace std;
 class Parser
 {
     public:
-        int parse(string text);
+        vector<uint32_t> Parse(string text);
         string d2b(uint32_t d, uint space);
 
     private:

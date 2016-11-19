@@ -4,7 +4,9 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <Parser.h>
+#include <Screen.h>
 #include <vector>
+#include <Processor.h>
 
 using namespace std;
 
@@ -190,7 +192,7 @@ void TextField::handleEvent( SDL_Event* e)
         switch (e->key.keysym.sym)
         {
             case SDLK_BACKSPACE: 
-            cout << "backspace, \\b pressed" << endl;
+            //cout << "backspace, \\b pressed" << endl;
 
             if (!TextField::text.empty())
             {
@@ -200,18 +202,22 @@ void TextField::handleEvent( SDL_Event* e)
             break;
 
             case SDLK_RETURN:
-            cout << "return, \\r pressed" << endl;
+           // cout << "return, \\r pressed" << endl;
             TextField::text += "\n";
             break;
 
             case SDLK_TAB:
-            cout << "tab, \\t pressed" << endl;
+            //cout << "tab, \\t pressed" << endl;
             TextField::text += "\t";
             break;
 
             case SDLK_RIGHT:
             Parser p = Parser();
-            p.parse(TextField::text);
+            Processor pro = Processor();
+            cout << "Command: " << p.Parse(TextField::text)[0] << endl;
+            pro.FlashMem( 0, p.Parse(TextField::text)[0] );
+            // this returns a vector of uint32_t
+            // can I just do the memory flashing here?
             break;
         }
         //cout << TextField::text << endl;
