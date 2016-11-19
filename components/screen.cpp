@@ -1,28 +1,43 @@
 #include <SDL.h>
 #include <vector>
+#include <screen.h>
+#include <iostream>
 
 using namespace std;
 
-Screen::Screen(const uint_8_t height, const SDL_Point position):
-    height(height),
-    position(pos),
-    grid(NULL);
+Screen::Screen(const SDL_Point pos):
+    position(pos)
 {
 };
 
-void Screen::render(SDL_Renderer *renderer, const unsigned int scale){
-    
+void Screen::render(SDL_Renderer *renderer, const unsigned int scale)
+{
+    SDL_Rect rect 
+    {
+        Screen::position.x,
+        Screen::position.y,
+        Screen::HEIGHT * scale, 
+        Screen::HEIGHT * scale
+    };
+
+    SDL_RenderFillRect(renderer, &rect);
     // Process for rendering:
-    SDL_Texture * pixel_grid = SDL_CreateTexture
-    (   
+    SDL_Texture * pixel_grid = SDL_CreateTexture(  
         renderer,
-        SDL_PIXELFORMAT_INDEX8,
+        SDL_PIXELFORMAT_ARGB8888,
         SDL_TEXTUREACCESS_STATIC,
-        Screen::height * scale,
-        Screen::height * scale
+        Screen::HEIGHT,
+        Screen::HEIGHT
     );
-    cout << SDL_BITSPERPIXEL(SDL_PIXELFORMAT_INDEX8) << endl;
-    cout << SDL_BYTESPERPIXEL(SDL_PIXELFORMAT_INDEX8) << endl;
+
+    SDL_UpdateTexture(
+        pixel_grid,
+        NULL, 
+        Screen::grid,
+        Screen::HEIGHT
+    );
+    SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
+    SDL_DestroyTexture(pixel_grid);
 }
 
 void Screen::readWord(unsigned int word)

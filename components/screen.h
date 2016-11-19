@@ -9,8 +9,10 @@ typedef uint8_t pixel;
 class Screen
 {
     public:
+        static const uint8_t HEIGHT = 32; // Supports up to 256 x 256 squares
+
         // Constructor function
-        Screen(const uint8_t height, const SDL_Point position);
+        Screen(const SDL_Point position);
 
         // Read the input coming in from the processor
         // and mutate own state
@@ -20,7 +22,7 @@ class Screen
         void render(SDL_Renderer* renderer, const unsigned int scale);
 
     private:
-        const uint8_t height; // Supports up to 256 x 256 squares
+
         const SDL_Point position;
-        pixel grid [Screen::height][Screen::height];
+        pixel grid [Screen::HEIGHT * Screen::HEIGHT];
 };
