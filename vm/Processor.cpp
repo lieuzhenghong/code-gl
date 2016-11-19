@@ -198,8 +198,8 @@ void Processor::emitError(ErrorCode err){
 
 // I/O functions
 
-void Processor::ConnectScreen(Screen* screen){
-	screen = screen;
+void Processor::ConnectScreen(Screen* the_screen){
+	screen = the_screen;
 }
 
 void Processor::Screen(int reg){
