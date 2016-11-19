@@ -49,7 +49,7 @@ class Processor{
 
 	// I/O functions
 	void ConnectScreen(Screen* screen);
-	void Screen(int reg);
+	void PScreen(int reg);
 
 	private:
 	ErrorCode currError;

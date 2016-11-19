@@ -202,8 +202,8 @@ void Processor::ConnectScreen(Screen* the_screen){
 	screen = the_screen;
 }
 
-void Processor::Screen(int reg){
+void Processor::PScreen(int reg){
 	if(!assertRegisterInRange(reg))
 		return;
-	screen.ReadWord(regs[reg]);
+	screen->ReadWord(regs[reg]);
 }

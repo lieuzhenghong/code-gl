@@ -9,7 +9,7 @@ const Instruction::Opcode Instruction::OPCODE_MAP[OPCODE_MAP_SIZE] = {
 	Opcode::NOOP, Opcode::HALT, Opcode::MOVI, Opcode::MOV,
 	Opcode::ADD, Opcode::SUB, Opcode::SHL, Opcode::SHR,
 	Opcode::AND, Opcode::OR, Opcode::XOR, Opcode::INVALID,
-	Opcode::LOAD, Opcode::STORE, Opcode::PRINT, Opcode::INVALID,
+	Opcode::LOAD, Opcode::STORE, Opcode::PRINT, Opcode::PSCREEN,
 
 	Opcode::JMP, Opcode::JMPD, Opcode::JAL, Opcode::INVALID,
 	Opcode::JZ, Opcode::JNZ, Opcode::JN, Opcode::JNN,
@@ -130,12 +130,11 @@ void Instruction::Execute(int instruction, Processor *processor){
 			getWriteRegField(instruction)
 		);
 		break;
-	case Opcode::SCREEN:
-		processor->Screen(
+	case Opcode::PSCREEN:
+		processor->PScreen(
 			getWriteRegField(instruction)
 		);
 		break;
-	default:
 	default:
 		assert(false); // Opcode not implemented
 		break;
@@ -214,8 +213,8 @@ unsigned int Instruction::EncodePrint(int reg){
 	return encodeOR(Opcode::PRINT, reg);
 }
 
-unsigned int Instruction::EncodeScreen(int reg){
-	return encodeOR(Opcode::SCREEN, reg);
+unsigned int Instruction::EncodePScreen(int reg){
+	return encodeOR(Opcode::PSCREEN, reg);
 }
 
 int Instruction::getField(unsigned int instruction, int offset, int width){

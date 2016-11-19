@@ -10,7 +10,7 @@ class Instruction{
 		ADD = 4, SUB, SHL, SHR,
 		AND = 8, OR, XOR,
 		LOAD = 12, STORE,
-		PRINT,
+		PRINT, PSCREEN,
 		JMP = 16, JMPD, JAL,
 		JZ = 20, JNZ, JN, JNN,
 		INVALID
@@ -50,7 +50,7 @@ class Instruction{
 	static unsigned int EncodeJnn(int condReg, int addr);
 	static unsigned int EncodeHalt();
 	static unsigned int EncodePrint(int reg);
-	static unsigned int EncodeScreen(int reg);
+	static unsigned int EncodePScreen(int reg);
 
 	private:
 	Instruction();

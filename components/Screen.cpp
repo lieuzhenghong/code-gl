@@ -10,7 +10,7 @@ Screen::Screen(const SDL_Point pos):
 {
 };
 
-void Screen::render(SDL_Renderer *renderer, const unsigned int scale)
+void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
 {
     SDL_Rect rect 
     {
@@ -40,7 +40,7 @@ void Screen::render(SDL_Renderer *renderer, const unsigned int scale)
     SDL_DestroyTexture(pixel_grid);
 }
 
-void Screen::readWord(unsigned int word)
+void Screen::ReadWord(unsigned int word)
 {
 
 }
