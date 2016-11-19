@@ -8,6 +8,55 @@
 
 using namespace std;
 
+void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>* out)
+{
+	if (*ins == "add")
+	{
+		// TODO
+		// Syntax: add r0 r1 r2
+		// Add r0 and r1 and save the result to r2
+		out->push_back(Instruction::EncodeAdd(
+			stoi((*r)[2]), 
+			stoi((*r)[1]), 
+			stoi((*r)[0])
+			));
+		cout << out->back() << endl;
+	}
+	else if (*ins == "mov")
+	{
+		// TODO
+		// Syntax: mov r0 r1
+		// Move the value of r[0] to r[1]
+		out->push_back(Instruction::EncodeMov(stoi((*r)[1]), stoi((*r)[0])) );
+		cout << out->back() << endl;
+	}
+	else if (*ins == "set")
+	{
+		// TODO
+		// Syntax: set r0 int
+		// Set r0 to be an int
+		out->push_back(Instruction::EncodeMovI(stoi((*r)[0]), stoi((*r)[1])) );
+		cout << out->back() << endl;
+	}
+	else if (*ins == "out")
+	{
+		// Syntax: out OR out r0  
+		// if no register is specified, just out all registers
+		if (r->empty())
+		{
+			for (int i = 0; i < 16; i++)
+			{
+                out->push_back(Instruction::EncodePScreen(i));
+				cout << out->back() << endl;
+			}
+		}
+		else
+		{
+			out->push_back( Instruction::EncodePScreen(stoi((*r)[0])) );
+			cout << out->back() << endl;
+		}
+	}
+};
 
 int Parser::parse(string text)
 {
@@ -56,31 +105,7 @@ int Parser::parse(string text)
 
 			if (text[i] == '\n')
 			{
-				// Now handle the instruction
-				if (ins == "add")
-				{
-					// TODO
-					// Syntax: add r0 r1 r2
-					// Add r0 and r1 and save the result to r2
-					out.push_back(Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0])));
-					cout << out.back() << endl;
-				}
-				else if (ins == "mov")
-				{
-					// TODO
-					// Syntax: mov r0 r1
-					// Move the value of r[0] to r[1]
-					out.push_back(Instruction::EncodeMov(stoi(r[1]), stoi(r[0])) );
-					cout << out.back() << endl;
-				}
-				else if (ins == "set")
-				{
-					// TODO
-					// Syntax: set r0 int
-					// Set r0 to be an int
-					out.push_back(Instruction::EncodeMovI(stoi(r[0]), stoi(r[1])) );
-					cout << out.back() << endl;
-				}
+				handle_instruction(&ins, &r, &out);
 				ins = "";
 				param_count=0;
 				r.clear();
@@ -106,32 +131,7 @@ int Parser::parse(string text)
 	cout << "End of string. Parsing last instruction..." << endl;
 	cout << "Instruction is: " << ins << endl;
 	// Now handle the instruction
-	if (ins == "add")
-	{
-		// TODO
-		// Syntax: add r0 r1 r2
-		// Add r0 and r1 and save the result to r2
-		out.push_back(Instruction::EncodeAdd(stoi(r[2]), stoi(r[1]), stoi(r[0])));
-		cout << out.back() << endl;
-	}
-	else if (ins == "mov")
-	{
-		// TODO
-		// Syntax: mov r0 r1
-		// Move the value of r[0] to r[1]
-		out.push_back(Instruction::EncodeMov(stoi(r[1]), stoi(r[0])) );
-		cout << out.back() << endl;
-	}
-	else if (ins == "set")
-	{
-		// TODO
-		// Syntax: set r0 int
-		// Set r0 to be an int
-		out.push_back(Instruction::EncodeMovI(stoi(r[0]), stoi(r[1])) );
-		cout << out.back() << endl;
-	}
-
-	// output into a file to debug
+	handle_instruction(&ins, &r, &out);
 	ofstream f;
 	f.open("test");
 	for (uint32_t i : out)
