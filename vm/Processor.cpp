@@ -1,6 +1,7 @@
 #include<iostream>
 #include<Processor.h>
 #include<Instruction.h>
+#include<Screen.h>
 
 using namespace std;
 
@@ -193,4 +194,16 @@ bool Processor::assertRegisterInRange(int reg){
 void Processor::emitError(ErrorCode err){
 	currError = err;
 	cout << "Processor encountered error code " << static_cast<int>(err) << " at position " << pc << endl;
+}
+
+// I/O functions
+
+void Processor::ConnectScreen(Screen* screen){
+	screen = screen;
+}
+
+void Processor::Screen(int reg){
+	if(!assertRegisterInRange(reg))
+		return;
+	screen.ReadWord(regs[reg]);
 }

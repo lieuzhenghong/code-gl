@@ -50,6 +50,7 @@ class Instruction{
 	static unsigned int EncodeJnn(int condReg, int addr);
 	static unsigned int EncodeHalt();
 	static unsigned int EncodePrint(int reg);
+	static unsigned int EncodeScreen(int reg);
 
 	private:
 	Instruction();

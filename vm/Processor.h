@@ -1,6 +1,7 @@
 #pragma once
 
 #include<MemoryUnit.h>
+#include<Screen.h>
 
 class Processor{
 	public:
@@ -46,6 +47,10 @@ class Processor{
 	void RunCycle();
 	void Reset();
 
+	// I/O functions
+	void ConnectScreen(Screen* screen);
+	void Screen(int reg);
+
 	private:
 	ErrorCode currError;
 	unsigned int regs[NUM_REGISTERS];
@@ -56,4 +61,7 @@ class Processor{
 	bool assertRegisterInRange(int reg);
 
 	void emitError(ErrorCode err);
+
+	// I/O stuff
+	Screen* screen = NULL;
 };

@@ -130,6 +130,12 @@ void Instruction::Execute(int instruction, Processor *processor){
 			getWriteRegField(instruction)
 		);
 		break;
+	case Opcode::SCREEN:
+		processor->Screen(
+			getWriteRegField(instruction)
+		);
+		break;
+	default:
 	default:
 		assert(false); // Opcode not implemented
 		break;
@@ -206,6 +212,10 @@ unsigned int Instruction::EncodeHalt(){
 
 unsigned int Instruction::EncodePrint(int reg){
 	return encodeOR(Opcode::PRINT, reg);
+}
+
+unsigned int Instruction::EncodeScreen(int reg){
+	return encodeOR(Opcode::SCREEN, reg);
 }
 
 int Instruction::getField(unsigned int instruction, int offset, int width){

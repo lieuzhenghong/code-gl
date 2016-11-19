@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include <vector>
-#include <screen.h>
+#include <Screen.h>
 #include <iostream>
 
 using namespace std;
@@ -14,10 +14,10 @@ void Screen::render(SDL_Renderer *renderer, const unsigned int scale)
 {
     SDL_Rect rect 
     {
-        Screen::position.x,
-        Screen::position.y,
-        Screen::HEIGHT * scale, 
-        Screen::HEIGHT * scale
+        position.x,
+        position.y,
+        HEIGHT * scale, 
+        HEIGHT * scale
     };
 
     SDL_RenderFillRect(renderer, &rect);
@@ -26,15 +26,15 @@ void Screen::render(SDL_Renderer *renderer, const unsigned int scale)
         renderer,
         SDL_PIXELFORMAT_ARGB8888,
         SDL_TEXTUREACCESS_STATIC,
-        Screen::HEIGHT,
-        Screen::HEIGHT
+        HEIGHT,
+        HEIGHT
     );
 
     SDL_UpdateTexture(
         pixel_grid,
         NULL, 
-        Screen::grid,
-        Screen::HEIGHT
+        grid,
+        HEIGHT
     );
     SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
     SDL_DestroyTexture(pixel_grid);

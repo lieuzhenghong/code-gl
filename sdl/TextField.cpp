@@ -3,7 +3,7 @@
 #include <SDLWindowManager.h>
 #include <SDL_ttf.h>
 #include <iostream>
-#include <parser.h>
+#include <Parser.h>
 #include <vector>
 
 using namespace std;
@@ -31,10 +31,10 @@ void TextField::render(SDL_Renderer* screenRenderer, TTF_Font* font)
 {
     SDL_Rect rect 
     {
-        TextField::position.x,
-        TextField::position.y,
-        TextField::width, 
-        TextField::height
+        position.x,
+        position.y,
+        width, 
+        height
     };
     switch (TextField::status)
     {

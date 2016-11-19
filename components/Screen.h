@@ -16,13 +16,12 @@ class Screen
 
         // Read the input coming in from the processor
         // and mutate own state
-        void readWord(unsigned int word);
+        void ReadWord(unsigned int word);
 
         // Render the screen and scale it up x times
-        void render(SDL_Renderer* renderer, const unsigned int scale);
+        void Render(SDL_Renderer* renderer, const unsigned int scale);
 
     private:
-
         const SDL_Point position;
         pixel grid [Screen::HEIGHT * Screen::HEIGHT];
 };

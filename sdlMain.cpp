@@ -6,7 +6,7 @@
 #include<TextField.h>
 #include<Processor.h>
 #include<Instruction.h>
-#include <screen.h>
+#include <Screen.h>
 
 using namespace std;
 
@@ -82,7 +82,7 @@ int main(int argc, char* args[]){
 		SDL_RenderClear(screenRenderer);
 
 		code_box.render(screenRenderer, font);
-		pixel_led.render(screenRenderer, PIXEL_LED_SCALE);
+		pixel_led.Render(screenRenderer, PIXEL_LED_SCALE);
 		SDL_RenderPresent(screenRenderer);
 
 		//frame++;
