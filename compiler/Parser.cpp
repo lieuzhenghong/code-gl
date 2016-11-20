@@ -15,20 +15,20 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 	if (*ins == "add")
 	{
 		// TODO
-		// Syntax: add r0 r1 r2
+		// Syntax: add r2 r1 r0
 		// Add r0 and r1 and save the result to r2
 		out->push_back(Instruction::EncodeAdd(
-			stoi((*r)[2]), 
+			stoi((*r)[0]), 
 			stoi((*r)[1]), 
-			stoi((*r)[0])
+			stoi((*r)[2])
 			));
 	}
 	else if (*ins == "mov")
 	{
 		// TODO
 		// Syntax: mov r0 r1
-		// Move the value of r[0] to r[1]
-		out->push_back(Instruction::EncodeMov(stoi((*r)[1]), stoi((*r)[0])) );
+		// Move the value of r[1] to r[0]
+		out->push_back(Instruction::EncodeMov(stoi((*r)[0]), stoi((*r)[1])) );
 	}
 	else if (*ins == "set")
 	{
@@ -228,30 +228,3 @@ List of commands
 	void Jnn(int condReg, int addr);
 	void Print(int reg);
 	void Halt();
-
-	void InvalidOpcode();
-
-	void FlashMem(int addr, unsigned int val);
-	void RunCycle();
-	void Reset();
-
-	Processor p = Processor();
-	p.FlashMem(0, Instruction::EncodeMovI(0, 5));
-	p.FlashMem(1, Instruction::EncodeMovI(1, 7));
-	p.FlashMem(2, Instruction::EncodeMovI(2, 0));
-	p.FlashMem(3, Instruction::EncodeMovI(3, 1));
-	p.FlashMem(4, Instruction::EncodeJz(1, 8));
-	p.FlashMem(5, Instruction::EncodeAdd(2, 2, 0));
-	p.FlashMem(6, Instruction::EncodeSub(1, 1, 3));
-	p.FlashMem(7, Instruction::EncodeJmp(3));
-	p.FlashMem(8, Instruction::EncodePrint(2));
-	p.FlashMem(9, Instruction::EncodeHalt());
-
-	int cnt = 0;
-	while(p.GetError() == Processor::ErrorCode::NO_ERROR){
-		cnt++;
-		p.RunCycle();
-	}
-
-	return 0;
-*/
