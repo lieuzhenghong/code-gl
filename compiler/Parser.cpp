@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const unsigned int NUM_REGISTERS = 16;
+
 void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>* out)
 {
 	if (*ins == "add")
@@ -33,22 +35,28 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		// TODO
 		// Syntax: set r0 int
 		// Set r0 to be an int
-		out->push_back(Instruction::EncodeMovI(stoi((*r)[0]), stoi((*r)[1])) );
+
+		// New syntax:
+		// set all int
+		// set all registers to be int
+
+		if ((*r)[0] == "all")
+		{
+			for (unsigned int i = 0; i < NUM_REGISTERS; i++)
+			{
+				out->push_back(Instruction::EncodeMovI(i, stoi((*r)[1])));
+			}
+		}
+		else{
+			out->push_back(Instruction::EncodeMovI(stoi((*r)[0]), stoi((*r)[1])) );
+		}
 	}
 	else if (*ins == "out")
 	{
-		// Syntax: out OR out r0  
-		// if no register is specified, just out all registers
-		if (r->empty())
+		// Syntax: out 
+		for (unsigned int i = 0; i < NUM_REGISTERS; i++)
 		{
-			for (int i = 0; i < 16; i++)
-			{
-                out->push_back(Instruction::EncodePScreen(i));
-			}
-		}
-		else
-		{
-			//cout << out->back() << endl;
+			out->push_back(Instruction::EncodePScreen(i));
 		}
 	}
 };
@@ -74,8 +82,25 @@ vector<uint32_t> Parser::Parse(string text)
 			{
 				//cout << "No longer reading instruction." << endl;
 				reading_instruction = false;
+
 				// Also, get ready to read a new parameter.
 				r.push_back(string());
+			}
+			
+			// Case where an instruction does not have parameters
+			// We have hit a new line despite not having hit a space
+			// (which would set reading_instruction to false, which
+			// then allows us to cross over into the else loop)
+			// So we must handle the behaviour whereby reading_instruction
+			// is still true but we have hit a newline.
+			else if (text[i] == '\n')
+			{
+				handle_instruction(&ins, &r, &out);
+				ins = "";
+				param_count = 0;
+				r.clear();
+				// This line is superfluous but whatever
+				reading_instruction = true;
 			}
 			else
 			{

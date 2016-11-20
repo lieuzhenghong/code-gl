@@ -8,7 +8,7 @@ using namespace std;
 Screen::Screen(const SDL_Point pos):
     position(pos)
 {
-    memset(grid, 255, sizeof(grid));
+    memset(grid, 0, sizeof(grid));
 };
 
 void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
@@ -47,7 +47,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
 
             uint8_t red = (grid[i] >> 5) + 1;
             uint8_t grn = (grid[i] >> 2 & 7) + 1;
-            uint8_t blu = (grid[i] & 3) + 1;
+            uint8_t blu = (grid[i] & 3);
 
             // cout << +red << ":" << +grn << ":" << +blu << endl;
 
@@ -56,7 +56,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
             // max is 4 blue colors
             red = (red * 32) - 1;
             grn = (grn * 32) - 1;
-            blu = (blu * 64) - 1;
+            blu = (blu * 85);
 
             // cout << +red << ":" << +grn << ":" << +blu << endl;
 
@@ -81,11 +81,14 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         pixel_grid,
         NULL,
         converted_grid,
-        HEIGHT
+        HEIGHT * sizeof(uint32_t)
     );
     SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
-    //Draw border
+    
+    // Draw border
     SDL_RenderDrawRect(renderer, &rect);
+
+    // Clean up
     SDL_DestroyTexture(pixel_grid);
 }
 
@@ -123,14 +126,14 @@ void Screen::ReadWord(unsigned int word)
             //cout << n << "th bit is 0" << endl;
             grid[(register_count * 32) + n] = 0;
         }
-        cout << "Grid square " << (register_count * 32) + n << " : " <<  +grid[(register_count *32) + n] << endl;
+        //cout << "Grid square " << (register_count * 32) + n << " : " <<  +grid[(register_count *32) + n] << endl;
     }
     register_count++;
     
     //Finished reading--reset the flag
     if (register_count > NUM_REGISTERS - 1)
     {
-        cout << "triggering" << endl;
+        //cout << "triggering" << endl;
         is_reading = false;
     }
 }
