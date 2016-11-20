@@ -141,12 +141,17 @@ int main(int argc, char* args[]){
 		pixel_led.Render(screenRenderer, PIXEL_LED_SCALE);
 
 		unsigned int cnt = 0;
-		if (pro.GetError() == Processor::ErrorCode::NO_ERROR && processor_running)
+		if (pro.GetError() == Processor::ErrorCode::NO_ERROR && 
+			processor_running
+			)
 		{
 			cnt++;
 			pro.RunCycle();
 		}
-		SDL_RenderPresent(screenRenderer);
+		if (pixel_led.ReadyToDraw())
+		{
+			SDL_RenderPresent(screenRenderer);
+		}
 	}
 	SDLWindowManager::Destroy();
 	return 0;

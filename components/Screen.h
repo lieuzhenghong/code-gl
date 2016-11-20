@@ -22,9 +22,13 @@ class Screen
         // Render the screen and scale it up x times
         void Render(SDL_Renderer* renderer, const unsigned int scale);
 
+        // Public function to check if the screen is ready to draw
+        bool ReadyToDraw();
+
     private:
         const SDL_Point position;
         bool is_reading;
+        bool ready_to_display = true;
         unsigned int register_count;
         pixel grid [HEIGHT * WIDTH] = {0};
 };

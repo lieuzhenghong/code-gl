@@ -104,6 +104,7 @@ void Screen::ReadWord(unsigned int word)
     {
         register_count = 0;
         is_reading = true;
+        ready_to_display = false;
     }
     // Each register is 32 bits and there are 16 registers
     // Each pixel is 8 bits and there are 32 pixels per line
@@ -113,7 +114,7 @@ void Screen::ReadWord(unsigned int word)
     // If the nth bit of the register is 1, fill up the nth pixel
     // in the line. Easy!
 
-    cout << "Register " << register_count << " : " << word << endl;
+    // cout << "Register " << register_count << " : " << word << endl;
     for (unsigned int n = 0; n < REGISTER_SIZE; n++)
     {
         // If the nth bit of the register is a 1
@@ -135,5 +136,11 @@ void Screen::ReadWord(unsigned int word)
     {
         //cout << "triggering" << endl;
         is_reading = false;
+        ready_to_display = true;
     }
+}
+
+bool Screen::ReadyToDraw()
+{
+    return (ready_to_display);
 }
