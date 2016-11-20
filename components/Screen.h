@@ -9,7 +9,8 @@ typedef uint8_t pixel;
 class Screen
 {
     public:
-        static const uint8_t HEIGHT = 32; // Supports up to 256 x 256 squares
+        static const uint8_t HEIGHT = 16; // Supports up to 256 x 256 squares
+        static const uint8_t WIDTH = 32;
 
         // Constructor function
         Screen(const SDL_Point position);
@@ -25,5 +26,5 @@ class Screen
         const SDL_Point position;
         bool is_reading;
         unsigned int register_count;
-        pixel grid [HEIGHT * HEIGHT] = {0};
+        pixel grid [HEIGHT * WIDTH] = {0};
 };

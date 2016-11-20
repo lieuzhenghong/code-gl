@@ -17,7 +17,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
     {
         position.x,
         position.y,
-        HEIGHT * scale, 
+        WIDTH * scale, 
         HEIGHT * scale
     };
 
@@ -29,11 +29,11 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         renderer,
         SDL_PIXELFORMAT_RGBA8888,
         SDL_TEXTUREACCESS_STATIC,
-        HEIGHT,
+        WIDTH,
         HEIGHT
     );
 
-    uint32_t converted_grid[HEIGHT * HEIGHT] = {0};
+    uint32_t converted_grid[WIDTH * HEIGHT] = {0};
     // Convert 8 bit to 32-bit color
     // 8 bit format: 
     // Bit  7 6 5 4 3 2 1 0
@@ -81,7 +81,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         pixel_grid,
         NULL,
         converted_grid,
-        HEIGHT * sizeof(uint32_t)
+        WIDTH * sizeof(uint32_t)
     );
     SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
     
