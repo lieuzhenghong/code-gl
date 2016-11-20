@@ -30,6 +30,14 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		// Move the value of r[1] to r[0]
 		out->push_back(Instruction::EncodeMov(stoi((*r)[0]), stoi((*r)[1])) );
 	}
+	else if (*ins == "goto")
+	{
+		// TODO
+		// Syntax: goto int 
+		// Goto line number int -1 
+		unsigned int addr = stoi((*r)[0]) - 1;
+		out->push_back(Instruction::EncodeJmp( addr ));
+	}
 	else if (*ins == "set")
 	{
 		// TODO
@@ -228,3 +236,5 @@ List of commands
 	void Jnn(int condReg, int addr);
 	void Print(int reg);
 	void Halt();
+
+*/

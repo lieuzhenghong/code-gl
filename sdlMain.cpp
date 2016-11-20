@@ -24,6 +24,9 @@ const SDL_Point pixel_led_position {
 	};
 TextField code_box = TextField(rect_width, rect_height, code_box_position);
 Screen pixel_led = Screen(pixel_led_position);
+SDL_Renderer *screenRenderer = SDLWindowManager::Init();
+Processor pro = Processor();
+bool processor_running = false;
 
 void handleEvent(SDL_Event* e, TextField* code_box)
 {
@@ -63,9 +66,8 @@ void handleEvent(SDL_Event* e, TextField* code_box)
 
             case SDLK_RIGHT:
             Parser parser = Parser();
-            Processor pro = Processor();
 			pro.ConnectScreen(&pixel_led);
-
+			pro.Reset();
 			unsigned int i = 0;
 			for (uint32_t word : parser.Parse(code_box->text))
 			{
@@ -74,13 +76,7 @@ void handleEvent(SDL_Event* e, TextField* code_box)
 				i++;
 			}
 			pro.FlashMem(i, Instruction::EncodeHalt());
-
-			unsigned int cnt = 0;
-			while (pro.GetError() == Processor::ErrorCode::NO_ERROR)
-			{
-				cnt++;
-				pro.RunCycle();
-			}
+			processor_running = true;
             break;
         }
     }
@@ -110,7 +106,6 @@ int main(int argc, char* args[]){
 	*/
 
 	printf("%i: %i\n", rect_height, rect_width);
-	SDL_Renderer *screenRenderer = SDLWindowManager::Init();
 	if(!screenRenderer)
 		return 1;
 	bool running = true;
@@ -144,9 +139,14 @@ int main(int argc, char* args[]){
 
 		code_box.render(screenRenderer, font);
 		pixel_led.Render(screenRenderer, PIXEL_LED_SCALE);
-		SDL_RenderPresent(screenRenderer);
 
-		//frame++;
+		unsigned int cnt = 0;
+		if (pro.GetError() == Processor::ErrorCode::NO_ERROR && processor_running)
+		{
+			cnt++;
+			pro.RunCycle();
+		}
+		SDL_RenderPresent(screenRenderer);
 	}
 	SDLWindowManager::Destroy();
 	return 0;

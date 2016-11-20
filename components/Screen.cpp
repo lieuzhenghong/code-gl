@@ -34,11 +34,11 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
     );
 
     uint32_t converted_grid[WIDTH * HEIGHT] = {0};
+    
     // Convert 8 bit to 32-bit color
     // 8 bit format: 
     // Bit  7 6 5 4 3 2 1 0
     // Data R R R G G G B B
-
     for (unsigned int i = 0; i < sizeof(grid) / sizeof(grid[0]); i++)
     {
         // Handle red first: first 3 bytes
