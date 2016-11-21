@@ -8,7 +8,7 @@ using namespace std;
 Processor::Processor():
 	currError(ErrorCode::NO_ERROR),
 	pc(0),
-	ram(RAM_SIZE)
+	ram(MemoryUnit(RAM_SIZE))
 {
 }
 

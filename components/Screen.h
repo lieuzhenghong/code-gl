@@ -9,15 +9,20 @@ typedef uint8_t pixel;
 class Screen
 {
     public:
-        static const uint8_t HEIGHT = 16; // Supports up to 256 x 256 squares
-        static const uint8_t WIDTH = 32;
+        const uint8_t height; // Supports up to 256 x 256 squares
+        const uint8_t width;
 
         // Constructor function
-        Screen(const SDL_Point position);
+        Screen(const SDL_Point position, const uint8_t height, const uint8_t width);
 
+        // Destructor function
+        ~Screen();
+        
         // Read the input coming in from the processor
         // and mutate own state
         void ReadWord(unsigned int word);
+
+        void ReadWordRAM(unsigned int word);
 
         // Render the screen and scale it up x times
         void Render(SDL_Renderer* renderer, const unsigned int scale);
@@ -30,5 +35,5 @@ class Screen
         bool is_reading;
         bool ready_to_display = true;
         unsigned int register_count;
-        pixel grid [HEIGHT * WIDTH] = {0};
+        pixel* grid; 
 };

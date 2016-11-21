@@ -78,6 +78,18 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		// Move the value of r[1] to r[0]
 		out->push_back(Instruction::EncodeMov(stoi((*r)[0]), stoi((*r)[1])) );
 	}
+	else if (*ins == "load")
+	{
+		// Syntax: load r0 m0
+		// Load the value of m[0] to r[0]
+		out->push_back(Instruction::EncodeLoad(stoi((*r)[0]), stoi((*r)[1])) );
+	}
+	else if (*ins == "store")
+	{
+		// Syntax: store r0 m0
+		// Store the value of r[0] into m[0]
+		out->push_back(Instruction::EncodeStore(stoi((*r)[0]), stoi((*r)[1])) );
+	}
 	else if (*ins == "goto")
 	{
 		// TODO

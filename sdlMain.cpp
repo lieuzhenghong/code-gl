@@ -20,10 +20,10 @@ const SDL_Point code_box_position{20, (height-rect_height)/2};
 const uint8_t PIXEL_LED_SCALE = 10;
 const SDL_Point pixel_led_position {
 	300, 
-	(height- (Screen::HEIGHT * PIXEL_LED_SCALE))/2
+	(height- (16 * PIXEL_LED_SCALE))/2
 	};
 TextField code_box = TextField(rect_width, rect_height, code_box_position);
-Screen pixel_led = Screen(pixel_led_position);
+Screen pixel_led = Screen(pixel_led_position, 32, 16);
 SDL_Renderer *screenRenderer = SDLWindowManager::Init();
 Processor pro = Processor();
 bool processor_running = false;

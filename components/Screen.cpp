@@ -1,15 +1,24 @@
 #include <SDL.h>
 #include <vector>
 #include <Screen.h>
+#include <Processor.h>
 #include <iostream>
 
 using namespace std;
 
-Screen::Screen(const SDL_Point pos):
-    position(pos)
+Screen::Screen(const SDL_Point pos, const uint8_t width, const uint8_t height):
+    height(height),
+    width(width),
+    position(pos),
+    grid(new pixel[height * width])
 {
-    memset(grid, 0, sizeof(grid));
+    memset(grid, 0, sizeof(*grid));
 };
+
+Screen::~Screen() // Destructor function
+{
+    delete[] grid;
+}
 
 void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
 {
@@ -17,8 +26,8 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
     {
         position.x,
         position.y,
-        WIDTH * scale, 
-        HEIGHT * scale
+        int(width * scale), 
+        int(height * scale)
     };
 
     SDL_RenderFillRect(renderer, &rect);
@@ -29,11 +38,11 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         renderer,
         SDL_PIXELFORMAT_RGBA8888,
         SDL_TEXTUREACCESS_STATIC,
-        WIDTH,
-        HEIGHT
+        width,
+        height 
     );
 
-    uint32_t converted_grid[WIDTH * HEIGHT] = {0};
+    uint32_t converted_grid[width * height] = {0};
     
     // Convert 8 bit to 32-bit color
     // 8 bit format: 
@@ -81,7 +90,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
         pixel_grid,
         NULL,
         converted_grid,
-        WIDTH * sizeof(uint32_t)
+        width * sizeof(uint32_t)
     );
     SDL_RenderCopy(renderer, pixel_grid, NULL, &rect);
     
@@ -120,12 +129,12 @@ void Screen::ReadWord(unsigned int word)
         // If the nth bit of the register is a 1
         if (word & (1 << n))
         {
-            grid[(register_count * 32) + n] = 255;
+            grid[(register_count * width) + n] = 255;
         }
         else
         {
             //cout << n << "th bit is 0" << endl;
-            grid[(register_count * 32) + n] = 0;
+            grid[(register_count * width) + n] = 0;
         }
         //cout << "Grid square " << (register_count * 32) + n << " : " <<  +grid[(register_count *32) + n] << endl;
     }
@@ -138,6 +147,37 @@ void Screen::ReadWord(unsigned int word)
         is_reading = false;
         ready_to_display = true;
     }
+}
+
+void Screen::ReadWordRAM(unsigned int word)
+{
+    const unsigned int RAM_BITS = 32;
+    const unsigned int PIXEL_BITS = 8;
+    const unsigned int ratio = RAM_BITS/PIXEL_BITS; 
+
+    if (!is_reading)
+    {
+        is_reading = true;
+        ready_to_display = false;
+    }
+
+    for (unsigned int grid_row = 0; grid_row < Processor::RAM_SIZE; grid_row++)
+    {
+        // Each RAM is 32-bits and we are going to split it up 
+        // into 8 bits
+        for (unsigned int n = 0; n < ratio; n++)
+        {
+            // Had to think for quite a while on this one
+            // AAAAAAAA BBBBBBBB CCCCCCCC DDDDDDDD
+            // First iteration: shift 0 & 255 = get Ds
+            // Next: >> 8 & 255 = get the Cs
+            // and so on
+            grid[(grid_row * ratio) + n] = (word >> (8 * n) & 255);             
+        }
+    }
+    // Finished reading
+    is_reading = false;
+    ready_to_display = true;
 }
 
 bool Screen::ReadyToDraw()

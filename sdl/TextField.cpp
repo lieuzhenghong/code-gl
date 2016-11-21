@@ -20,10 +20,10 @@ enum TextFieldStatus
 };
 
 TextField::TextField(const int width, const int height, const SDL_Point pos):
+    text(""),
     width(width),
     height(height),
     position(pos),
-    text(""),
     text_lines(1)
 {
 };
@@ -86,8 +86,8 @@ void TextField::render(SDL_Renderer* screenRenderer, TTF_Font* font)
 
             SDL_Rect textQuad
             {
-                TextField::position.x + 5,
-                TextField::position.y + line_count * 16,
+                int(TextField::position.x + 5),
+                int(TextField::position.y + line_count * 16),
                 text_width,
                 text_height
             };
