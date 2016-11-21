@@ -73,6 +73,27 @@ void Instruction::Execute(int instruction, Processor *processor){
 			getReg2Field(instruction)
 		);
 		break;
+	case Opcode::AND:
+		processor->And(
+			getWriteRegField(instruction),
+			getReg1Field(instruction),
+			getReg2Field(instruction)
+		);
+		break;
+	case Opcode::OR:
+		processor->Or(
+			getWriteRegField(instruction),
+			getReg1Field(instruction),
+			getReg2Field(instruction)
+		);
+		break;
+	case Opcode::XOR:
+		processor->Xor(
+			getWriteRegField(instruction),
+			getReg1Field(instruction),
+			getReg2Field(instruction)
+		);
+		break;
 	case Opcode::LOAD:
 		processor->Load(
 			getWriteRegField(instruction),
@@ -169,6 +190,17 @@ unsigned int Instruction::EncodeShr(int writeReg, int reg1, int reg2){
 	return encodeORRR(Opcode::SHR, writeReg, reg1, reg2);
 }
 
+unsigned int Instruction::EncodeAnd(int writeReg, int reg1, int reg2){
+	return encodeORRR(Opcode::AND, writeReg, reg1, reg2);
+}
+
+unsigned int Instruction::EncodeOr(int writeReg, int reg1, int reg2){
+	return encodeORRR(Opcode::OR, writeReg, reg1, reg2);
+}
+
+unsigned int Instruction::EncodeXor(int writeReg, int reg1, int reg2){
+	return encodeORRR(Opcode::XOR, writeReg, reg1, reg2);
+}
 unsigned int Instruction::EncodeLoad(int writeReg, int addrReg){
 	return encodeORR(Opcode::LOAD, writeReg, addrReg);
 }

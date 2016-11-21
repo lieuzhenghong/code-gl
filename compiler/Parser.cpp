@@ -23,6 +23,54 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 			stoi((*r)[2])
 			));
 	}
+	else if (*ins == "sub")
+	{
+		out->push_back(Instruction::EncodeSub(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
+	else if (*ins == "left")
+	{
+		out->push_back(Instruction::EncodeShl(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
+	else if (*ins == "right")
+	{
+		out->push_back(Instruction::EncodeShr(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
+	else if (*ins == "and")
+	{
+		out->push_back(Instruction::EncodeAnd(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
+	else if (*ins == "or")
+	{
+		out->push_back(Instruction::EncodeOr(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
+	else if (*ins == "xor")
+	{
+		out->push_back(Instruction::EncodeXor(
+			stoi((*r)[0]), 
+			stoi((*r)[1]), 
+			stoi((*r)[2])
+			));
+	}
 	else if (*ins == "mov")
 	{
 		// TODO
