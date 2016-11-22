@@ -12,7 +12,12 @@ Screen::Screen(const SDL_Point pos, const uint8_t width, const uint8_t height):
     position(pos),
     grid(new pixel[height * width])
 {
-    memset(grid, 0, sizeof(*grid));
+    cout << "Size of grid: " <<  sizeof(pixel) * height * width << endl;
+    memset(grid, 255, height * width * sizeof(pixel));
+    for (unsigned int i = 0; i < height * width; i++)
+    {
+        cout << "Grid square " << i << " is "  << (+grid[i]) << endl;
+    }
 };
 
 Screen::~Screen() // Destructor function
@@ -48,7 +53,7 @@ void Screen::Render(SDL_Renderer *renderer, const unsigned int scale)
     // 8 bit format: 
     // Bit  7 6 5 4 3 2 1 0
     // Data R R R G G G B B
-    for (unsigned int i = 0; i < sizeof(grid) / sizeof(grid[0]); i++)
+    for (unsigned int i = 0; i < (width * height); i++)
     {
         // Handle red first: first 3 bytes
         // 8 values map to 256 values.
