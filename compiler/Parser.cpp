@@ -86,9 +86,9 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 	}
 	else if (*ins == "store")
 	{
-		// Syntax: store r0 m0
+		// Syntax: store m0 r0
 		// Store the value of r[0] into m[0]
-		out->push_back(Instruction::EncodeStore(stoi((*r)[0]), stoi((*r)[1])) );
+		out->push_back(Instruction::EncodeStore(stoi((*r)[1]), stoi((*r)[0])) );
 	}
 	else if (*ins == "goto")
 	{
