@@ -17,13 +17,24 @@ const int rect_height = width/2;
 const int rect_width = height/2;
 TTF_Font* font = NULL;
 const SDL_Point code_box_position{20, (height-rect_height)/2};
-const uint8_t PIXEL_LED_SCALE = 10;
+const uint8_t PIXEL_LED_SCALE = 4;
 const SDL_Point pixel_led_position {
 	300, 
-	(height- (16 * PIXEL_LED_SCALE))/2
+	(height- (16 * PIXEL_LED_SCALE))
 	};
 TextField code_box = TextField(rect_width, rect_height, code_box_position);
 Screen pixel_led = Screen(pixel_led_position, 32, 16);
+
+
+// This is the RAM display
+const uint8_t RAM_DISPLAY_SCALE = 2;
+const SDL_Point ram_display_position {
+	300,
+	(height - (128 * RAM_DISPLAY_SCALE))/2
+};
+
+Screen ram_display = Screen(ram_display_position, 128, 128);
+
 SDL_Renderer *screenRenderer = SDLWindowManager::Init();
 Processor pro = Processor();
 bool processor_running = false;
@@ -139,6 +150,7 @@ int main(int argc, char* args[]){
 
 		code_box.render(screenRenderer, font);
 		pixel_led.Render(screenRenderer, PIXEL_LED_SCALE);
+		ram_display.Render(screenRenderer, RAM_DISPLAY_SCALE);
 
 		unsigned int cnt = 0;
 		if (pro.GetError() == Processor::ErrorCode::NO_ERROR && 

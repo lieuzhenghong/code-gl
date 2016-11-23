@@ -126,6 +126,10 @@ void Parser::handle_instruction(string* ins, vector<string>* r, vector<uint32_t>
 		{
 			out->push_back(Instruction::EncodePScreen(i));
 		}
+		for (unsigned int i = 0; i < RAM_SIZE; i++)
+		{
+			out->push_back(Instruction::EncodePScreenRAM)
+		}
 	}
 };
 

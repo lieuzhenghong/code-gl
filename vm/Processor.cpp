@@ -2,6 +2,7 @@
 #include<Processor.h>
 #include<Instruction.h>
 #include<Screen.h>
+#include<MemoryUnit.h>
 
 using namespace std;
 
@@ -206,4 +207,8 @@ void Processor::PScreen(int reg){
 	if(!assertRegisterInRange(reg))
 		return;
 	screen->ReadWord(regs[reg]);
+}
+
+void Processor::PScreenRAM(int reg){
+	screen->ReadWordRAM(mem[regs[reg]]);
 }

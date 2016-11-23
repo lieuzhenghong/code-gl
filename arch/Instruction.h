@@ -8,7 +8,7 @@ class Instruction{
 		NOOP = 0, HALT,
 		MOVI, MOV,
 		ADD = 4, SUB, SHL, SHR,
-		AND = 8, OR, XOR,
+		AND = 8, OR, XOR, PSCREENRAM,
 		LOAD = 12, STORE,
 		PRINT, PSCREEN,
 		JMP = 16, JMPD, JAL,
@@ -39,6 +39,7 @@ class Instruction{
 	static unsigned int EncodeAnd(int writeReg, int reg1, int reg2);
 	static unsigned int EncodeOr(int writeReg, int reg1, int reg2);
 	static unsigned int EncodeXor(int writeReg, int reg1, int reg2);
+	static unsigned int EncodePScreenRAM(int reg);
 	static unsigned int EncodeLoad(int writeReg, int addrReg);
 	static unsigned int EncodeStore(int readReg, int addrReg);
 	static unsigned int EncodeJmp(int addr);

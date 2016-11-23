@@ -201,6 +201,10 @@ unsigned int Instruction::EncodeOr(int writeReg, int reg1, int reg2){
 unsigned int Instruction::EncodeXor(int writeReg, int reg1, int reg2){
 	return encodeORRR(Opcode::XOR, writeReg, reg1, reg2);
 }
+
+unsigned int Instruction::EncodePScreenRAM(int reg){
+	return encodeOR(Opcode::PSCREENRAM, reg);
+}
 unsigned int Instruction::EncodeLoad(int writeReg, int addrReg){
 	return encodeORR(Opcode::LOAD, writeReg, addrReg);
 }

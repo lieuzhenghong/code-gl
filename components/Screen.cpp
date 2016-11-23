@@ -13,11 +13,13 @@ Screen::Screen(const SDL_Point pos, const uint8_t width, const uint8_t height):
     grid(new pixel[height * width])
 {
     cout << "Size of grid: " <<  sizeof(pixel) * height * width << endl;
-    memset(grid, 255, height * width * sizeof(pixel));
+    memset(grid, 0, height * width * sizeof(pixel));
+    /*
     for (unsigned int i = 0; i < height * width; i++)
     {
         cout << "Grid square " << i << " is "  << (+grid[i]) << endl;
     }
+    */
 };
 
 Screen::~Screen() // Destructor function
